@@ -1,5 +1,7 @@
 package com.simpleJwt.server.SimpleJwtServer.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,8 @@ import com.simpleJwt.server.SimpleJwtServer.config.TokenUtil;
 import com.simpleJwt.server.SimpleJwtServer.exception.Details;
 
 import com.simpleJwt.server.SimpleJwtServer.model.UserNamePassword;
+import com.simpleJwt.server.SimpleJwtServer.reposMongoDB.BooksRepository;
+import com.simpleJwt.server.SimpleJwtServer.reposMongoDB.data.Books;
 import com.simpleJwt.server.SimpleJwtServer.service.MyUserDetailsService;
 
 @RestController
@@ -27,10 +31,20 @@ import com.simpleJwt.server.SimpleJwtServer.service.MyUserDetailsService;
 @RequestMapping("/hello")
 public class AuthenticateController {
 	
+	@Autowired
+	public com.simpleJwt.server.SimpleJwtServer.reposStgDB.StudentRepository studentRepository;
+	
+	@Autowired
+	public BooksRepository booksRepository;
+	
 	@GetMapping("/welcomeMessage")
 	public ResponseEntity<String> getMessage(@RequestParam(name = "i") Integer i){
 		if ( i == 1)
 		throw new Details();
+		List students = (List) studentRepository.findAll();
+		System.out.println("list:::"+students.size());
+		List<Books> books  =booksRepository.findAll();
+		System.out.println("Books..."+books.size());
 		return new ResponseEntity<String>(HttpStatus.OK);
 	}
 
